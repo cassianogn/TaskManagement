@@ -1,4 +1,5 @@
 ﻿using TaskManagement.Application.Base.Handler;
+using TaskManagement.Domain.Base;
 using TaskManagement.Domain.TaskItems;
 
 namespace TaskManagement.Application.TaskItems.Commands.AddTaskItem
@@ -14,12 +15,11 @@ namespace TaskManagement.Application.TaskItems.Commands.AddTaskItem
 
         protected override async Task<HandlerResponse<Guid>> BaseHandleAsync(AddTaskItemCommand command)
         {
-            var commandValidation = command.IsValid();
+            ValidationResult commandValidation = command.Validate();
             if (!commandValidation.IsValid) return HandlerResponse<Guid>.DomainFailure(commandValidation.Errors.ToList());
             
-            var task = command.ToDomain();
-
-            var duplicationValidation = await TaskItemDomainValidation.IsDuplicatedAsync(task, _taskItemRepository);
+            TaskItem task = command.ToDomain();
+            ValidationResult duplicationValidation = await TaskItemDomainValidation.IsDuplicatedAsync(task, _taskItemRepository);
             if (!duplicationValidation.IsValid)
             {
                 return HandlerResponse<Guid>.DomainFailure(duplicationValidation.Errors.ToList());
