@@ -2,14 +2,14 @@
 {
     public class HandlerResponse
     {
-        protected HandlerResponse(bool isSuccessful, string? errorMessage, Exception? exception)
+        protected HandlerResponse(bool isSuccessful, IEnumerable<string>? errorMessage, Exception? exception)
         {
             IsSuccessful = isSuccessful;
             ErrorMessage = errorMessage;
             Exception = exception;
         }
         public bool IsSuccessful { get; }
-        public string? ErrorMessage { get; }
+        public IEnumerable<string>? ErrorMessage { get; }
         public Exception? Exception { get; }
         public bool IsUnexpectedFailure => Exception != null;
         public bool IsDomainFailure => !IsSuccessful && Exception == null;
@@ -19,17 +19,22 @@
         }
         public static HandlerResponse DomainFailure(string errorMessage)
         {
-            return new HandlerResponse(false, errorMessage, null);
+            var errorMessages = new List<string>() { errorMessage };
+            return new HandlerResponse(false, errorMessages, null);
+        }
+        public static HandlerResponse DomainFailure(IEnumerable<string> errorMessages)
+        {
+            return new HandlerResponse(false, errorMessages, null);
         }
         public static HandlerResponse UnexpectedFailure(Exception exception)
         {
-            return new HandlerResponse(false, exception.Message, exception);
+            return new HandlerResponse(false, new List<string>() { exception.Message }, exception);
         }
     }
 
     public class HandlerResponse<TResponse> : HandlerResponse
     {
-        private HandlerResponse(TResponse? response, bool isSuccessful, string? errorMessage, Exception? exception): base(isSuccessful, errorMessage, exception)
+        private HandlerResponse(TResponse? response, bool isSuccessful, IEnumerable<string>? errorMessage, Exception? exception): base(isSuccessful, errorMessage, exception)
         {
             Response = response;
         }
@@ -38,5 +43,17 @@
         {
             return new HandlerResponse<TResponse>(response, true, null, null);
         }
+
+        new public static HandlerResponse<TResponse> DomainFailure(IEnumerable<string> errorMessages)
+        {
+            return new HandlerResponse<TResponse>(default, false, errorMessages, null);
+        }
+        new public static HandlerResponse<TResponse> DomainFailure(string errorMessage)
+        {
+            var errorMessages = new List<string>() { errorMessage };
+            return new HandlerResponse<TResponse>(default, false, errorMessages, null);
+        }
+
+
     }
 }

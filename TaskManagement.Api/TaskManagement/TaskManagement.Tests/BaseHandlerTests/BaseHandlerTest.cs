@@ -68,7 +68,7 @@ namespace TaskManagement.Tests.BaseHandlerTests
             // Assert
             Assert.NotNull(handler);
             Assert.False(result.IsSuccessful);
-            Assert.Equal(FakeCommandHandlerWithDomainError.DomainErrorMessage, result.ErrorMessage);
+            Assert.Equal(FakeCommandHandlerWithDomainError.DomainErrorMessage, result.ErrorMessage!.Single());
             Assert.Null(result.Exception);
         }
     }
