@@ -48,6 +48,13 @@ namespace TaskManagement.Tests.TaskItemTests
             Assert.Contains(queryResult.Response, item => item.Title.Contains(addCommand.Title));
         }
 
+        [Fact]
+        public async Task HandleTaskItem_ShouldToggle_RunWIthSuccess()
+        {
+            
+        }
+
+
         public void Dispose()
         {
             var context = _scope.ServiceProvider.GetRequiredService<TaskManagementDbContext>();
