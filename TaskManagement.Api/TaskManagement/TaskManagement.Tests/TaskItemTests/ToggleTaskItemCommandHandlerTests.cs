@@ -20,7 +20,9 @@ namespace TaskManagement.Tests.TaskItemTests
 
             // Assert
             BaseFailureAssert(result);
+            _repositoryMock.Verify(x => x.GetByIdAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>()), Times.Never);
             Assert.Contains(ToggleTaskItemCommandValidation.IdIsRequired, result.ErrorMessage!);
+
         }
 
         [Fact]
@@ -43,7 +45,7 @@ namespace TaskManagement.Tests.TaskItemTests
         private void BaseFailureAssert(Application.Base.Handler.HandlerResponse result)
         {
             Assert.False(result.IsSuccessful);
-            _repositoryMock.Verify(x => x.GetByIdAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>()), Times.Never);
+            _repositoryMock.Verify(x => x.UpdateAsync(It.IsAny<TaskItem>(), It.IsAny<CancellationToken>()), Times.Never);
         }
 
         [Fact]
