@@ -61,7 +61,7 @@ namespace TaskManagement.Domain.TaskItems
 
         public static async Task<ValidationResult> IsDuplicatedAsync(TaskItem taskItem, ITaskItemRepository repository)
         {
-            IEnumerable<TaskItem> existentTasks = await repository.SearchAsync(taskItem.Title);
+            IReadOnlyCollection<TaskItem> existentTasks = await repository.SearchAsync(taskItem.Title);
             var isDuplicated = existentTasks.Any(existentTask => existentTask.Title == taskItem.Title && existentTask.Id != taskItem.Id);
 
             if (isDuplicated)

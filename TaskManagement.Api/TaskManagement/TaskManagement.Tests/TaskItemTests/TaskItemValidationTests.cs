@@ -105,6 +105,8 @@ namespace TaskManagement.Tests.TaskItemTests
         {
             // Arrange
             ITaskItemRepository repository = _taskItemRepositoryMock.Object;
+            _taskItemRepositoryMock.Setup(_taskItemRepositoryMock => _taskItemRepositoryMock.SearchAsync("Unique Title", default))
+                .ReturnsAsync(new List<TaskItem>());
             var newTaskItem = new TaskItem("Unique Title", DateTime.UtcNow);
             
             // Act
