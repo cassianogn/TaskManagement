@@ -9,6 +9,21 @@ namespace TaskManagement.Tests.TaskItemTests
         private readonly Mock<ITaskItemRepository> _repositoryMock = new();
 
         [Fact]
+        public async Task HandleAsync_EmptyId_ShouldReturnValidationError()
+        {
+            // Arrange
+            var command = new ToggleTaskItemCommand(Guid.Empty);
+            var handler = new ToggleTaskItemCommandHandler(_repositoryMock.Object);
+
+            // Act
+            var result = await handler.HandleAsync(command);
+
+            // Assert
+            BaseFailureAssert(result);
+            Assert.Contains(ToggleTaskItemCommandValidation.IdIsRequired, result.ErrorMessage!);
+        }
+
+        [Fact]
         public async Task Handle_ShouldReturnError_WhenTaskDoesNotExist()
         {
             // Arrange
@@ -22,9 +37,13 @@ namespace TaskManagement.Tests.TaskItemTests
             var result = await handler.HandleAsync(command);
 
             // Assert
-            Assert.False(result.IsSuccessful);
+            BaseFailureAssert(result);
             Assert.Equal(ToggleTaskItemCommandHandler.TaskNotFoundMessage, result.ErrorMessage!.First());
-            _repositoryMock.Verify(x => x.UpdateAsync(It.IsAny<TaskItem>(), It.IsAny<CancellationToken>()), Times.Never);
+        }
+        private void BaseFailureAssert(Application.Base.Handler.HandlerResponse result)
+        {
+            Assert.False(result.IsSuccessful);
+            _repositoryMock.Verify(x => x.GetByIdAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>()), Times.Never);
         }
 
         [Fact]
@@ -47,5 +66,6 @@ namespace TaskManagement.Tests.TaskItemTests
             Assert.True(task.IsCompleted); 
             _repositoryMock.Verify(x => x.UpdateAsync(task, It.IsAny<CancellationToken>()), Times.Once);
         }
+
     }
 }
