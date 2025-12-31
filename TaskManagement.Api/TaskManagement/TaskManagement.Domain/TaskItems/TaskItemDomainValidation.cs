@@ -16,6 +16,7 @@ namespace TaskManagement.Domain.TaskItems
         public const string CreatedAtMustBeValidDate = "CreatedAt must be a valid date";
         public const string CreatedAtCannotBeGreaterThanNow = "CreatedAt cannot be in the future";
         public const string UpdatedAtMustBeSetWhenCompleted = "UpdatedAt must be set when task is completed";
+        public const string DuplicatedTitleError = "A task with the same title already exists.";
 
         public static void ThrowIfInvalid(TaskItem taskItem)
         {
