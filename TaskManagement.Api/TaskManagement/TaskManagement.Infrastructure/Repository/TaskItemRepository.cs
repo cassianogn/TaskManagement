@@ -12,6 +12,10 @@ namespace TaskManagement.Infrastructure.Repository
         {
             _context = context;
         }
+        public async Task<TaskItem?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
+        {
+            return await _context.TaskItems.FindAsync(new object[] { id }, cancellationToken);
+        }
 
         public async Task CreateAsync(TaskItem taskItem, CancellationToken cancellationToken = default)
         {
