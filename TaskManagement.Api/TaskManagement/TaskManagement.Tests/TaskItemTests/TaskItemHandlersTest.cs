@@ -1,6 +1,7 @@
 ﻿
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
+using TaskManagement.Application;
 using TaskManagement.Application.Base.Handler;
 using TaskManagement.Application.TaskItems.Commands.AddTaskItem;
 using TaskManagement.Application.TaskItems.Commands.ToggleTaskItem;
@@ -20,7 +21,10 @@ namespace TaskManagement.Tests.TaskItemTests
         public TaskItemHandlersTest()
         {
             var taskItems = new List<TaskItem>();
-            _serviceProvider = new ServiceCollection().AddInfrastructure().BuildServiceProvider();
+            _serviceProvider = new ServiceCollection()
+                .AddApplication()
+                .AddInfrastructure()
+                .BuildServiceProvider();
             _scope = _serviceProvider.CreateScope();
             _taskItemRepository = _scope.ServiceProvider.GetRequiredService<ITaskItemRepository>();
 
@@ -31,7 +35,7 @@ namespace TaskManagement.Tests.TaskItemTests
         {
             // Arrange
             var addCommand = new AddTaskItemCommand("Test Task");
-            var addHandler = new AddTaskItemCommandHandler(_taskItemRepository);
+            var addHandler = _scope.ServiceProvider.GetRequiredService<AddTaskItemCommandHandler>();
             // Act
             HandlerResponse<Guid> result = await addHandler.HandleAsync(addCommand);
             // Assert
@@ -39,7 +43,7 @@ namespace TaskManagement.Tests.TaskItemTests
 
             // arrange 
             var command = new GetTaskItemsQuery(addCommand.Title);
-            var handler = new GetTaskItemsQueryHandler(_taskItemRepository);
+            var handler = _scope.ServiceProvider.GetRequiredService<GetTaskItemsQueryHandler>();
             // Act
             HandlerResponse<IReadOnlyCollection<GetTaskItemsQueryResult>> queryResult = await handler.HandleAsync(command);
             // Assert
@@ -53,9 +57,9 @@ namespace TaskManagement.Tests.TaskItemTests
         public async Task HandleTaskItem_ShouldToggle_RunWIthSuccess()
         {
             // Arrange
-            var queryHandler = new GetTaskItemsQueryHandler(_taskItemRepository);
+            var queryHandler = _scope.ServiceProvider.GetRequiredService<GetTaskItemsQueryHandler>();
             var addCommand = new AddTaskItemCommand("Test Task for Toggle");
-            var addHandler = new AddTaskItemCommandHandler(_taskItemRepository);
+            var addHandler = _scope.ServiceProvider.GetRequiredService<AddTaskItemCommandHandler>();
             // Act
             HandlerResponse<Guid> result = await addHandler.HandleAsync(addCommand);
             // Assert
@@ -64,7 +68,7 @@ namespace TaskManagement.Tests.TaskItemTests
          
             // arrange
             var toggleCommand = new ToggleTaskItemCommand(result.Response);
-            var toggleHandler = new ToggleTaskItemCommandHandler(_taskItemRepository);
+            var toggleHandler = _scope.ServiceProvider.GetRequiredService<ToggleTaskItemCommandHandler>();
             Guid newTaskItemId = result.Response;
             // Act
             HandlerResponse toggleResult = await toggleHandler.HandleAsync(toggleCommand);
