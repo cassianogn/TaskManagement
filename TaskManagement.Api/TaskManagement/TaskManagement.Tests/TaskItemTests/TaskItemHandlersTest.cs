@@ -26,7 +26,7 @@ namespace TaskManagement.Tests.TaskItemTests
         }
 
         [Fact]
-        public async Task HandleTaskItem_CorrectlyProcessesValidTaskItemAsync()
+        public async Task HandleTaskItem_ShouldAdd_RunWitSuccess()
         {
             // Arrange
             var addCommand = new AddTaskItemCommand("Test Task");
