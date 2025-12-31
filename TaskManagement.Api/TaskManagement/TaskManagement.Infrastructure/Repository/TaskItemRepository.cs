@@ -13,18 +13,16 @@ namespace TaskManagement.Infrastructure.Repository
             _context = context;
         }
 
-        public async Task<TaskItem> CreateAsync(TaskItem taskItem, CancellationToken cancellationToken = default)
+        public async Task CreateAsync(TaskItem taskItem, CancellationToken cancellationToken = default)
         {
             await _context.TaskItems.AddAsync(taskItem, cancellationToken);
             await _context.SaveChangesAsync(cancellationToken);
-            return taskItem;
         }
 
-        public async Task<TaskItem> UpdateAsync(TaskItem taskItem, CancellationToken cancellationToken = default)
+        public async Task UpdateAsync(TaskItem taskItem, CancellationToken cancellationToken = default)
         {
             _context.TaskItems.Update(taskItem);
             await _context.SaveChangesAsync(cancellationToken);
-            return taskItem;
         }
 
         public async Task<bool> DeleteAsync(Guid id, CancellationToken cancellationToken = default)
