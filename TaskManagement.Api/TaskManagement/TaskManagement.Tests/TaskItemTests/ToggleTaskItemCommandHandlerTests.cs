@@ -16,7 +16,7 @@ namespace TaskManagement.Tests.TaskItemTests
             var handler = new ToggleTaskItemCommandHandler(_repositoryMock.Object);
 
             // Act
-            var result = await handler.HandleAsync(command);
+            var result = await handler.HandleAsync(command, default);
 
             // Assert
             BaseFailureAssert(result);
@@ -36,7 +36,7 @@ namespace TaskManagement.Tests.TaskItemTests
             var handler = new ToggleTaskItemCommandHandler(_repositoryMock.Object);
 
             // Act
-            var result = await handler.HandleAsync(command);
+            var result = await handler.HandleAsync(command, default);
 
             // Assert
             BaseFailureAssert(result);
@@ -61,7 +61,7 @@ namespace TaskManagement.Tests.TaskItemTests
             var handler = new ToggleTaskItemCommandHandler(_repositoryMock.Object);
 
             // Act
-            var result = await handler.HandleAsync(command);
+            var result = await handler.HandleAsync(command, default);
 
             // Assert
             Assert.True(result.IsSuccessful);

@@ -14,7 +14,7 @@ namespace TaskManagement.Tests.BaseHandlerTests
             var handler = new FakeCommandHandler();
 
             // Act
-            var result = await handler.HandleAsync(command);
+            var result = await handler.HandleAsync(command, default);
             
             // Assert
             Assert.NotNull(handler);
@@ -30,7 +30,7 @@ namespace TaskManagement.Tests.BaseHandlerTests
             var handler = new FakeCommandHandlerWithResponse();
 
             // Act
-            var result = await handler.HandleAsync(command);
+            var result = await handler.HandleAsync(command, default);
 
             // Assert
             Assert.NotNull(handler);
@@ -49,7 +49,7 @@ namespace TaskManagement.Tests.BaseHandlerTests
             var baseHandlerErrorMessage = $"Unexpected error occurred while handling command of type {typeof(FakeCommand).FullName}. Command parameters: {{\"FakeId\":null}}";
             
             // Act 
-            var exception = await Assert.ThrowsAsync<HandlerException>(() => handler.HandleAsync(command));
+            var exception = await Assert.ThrowsAsync<HandlerException>(() => handler.HandleAsync(command, default));
 
             // Assert
             Assert.NotNull(exception);
@@ -64,7 +64,7 @@ namespace TaskManagement.Tests.BaseHandlerTests
             var command = new FakeCommand();
             var handler = new FakeCommandHandlerWithDomainError();
             // Act
-            var result = await handler.HandleAsync(command);
+            var result = await handler.HandleAsync(command, default);
             // Assert
             Assert.NotNull(handler);
             Assert.False(result.IsSuccessful);

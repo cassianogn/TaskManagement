@@ -14,7 +14,7 @@ namespace TaskManagement.Application.TaskItems.Commands.ToggleTaskItem
             _repository = repository;
         }
 
-        protected override async Task<HandlerResponse> BaseHandleAsync(ToggleTaskItemCommand command)
+        protected override async Task<HandlerResponse> BaseHandleAsync(ToggleTaskItemCommand command, CancellationToken cancellationToken)
         {
             ValidationResult validation = command.Validate();
             if (!validation.IsValid) 

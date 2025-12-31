@@ -12,7 +12,7 @@ namespace TaskManagement.Application.TaskItems.Queries
             _taskItemRepository = taskItemRepository;
         }
 
-        protected override async Task<HandlerResponse<IReadOnlyCollection<GetTaskItemsQueryResult>>> BaseHandleAsync(GetTaskItemsQuery command)
+        protected override async Task<HandlerResponse<IReadOnlyCollection<GetTaskItemsQueryResult>>> BaseHandleAsync(GetTaskItemsQuery command, CancellationToken cancellationToken)
         {
             IReadOnlyCollection<TaskItem> taskItems = await _taskItemRepository.SearchAsync(command.SearchKey);
             IReadOnlyCollection<GetTaskItemsQueryResult> result = taskItems.Select(taskItem => new GetTaskItemsQueryResult(taskItem))

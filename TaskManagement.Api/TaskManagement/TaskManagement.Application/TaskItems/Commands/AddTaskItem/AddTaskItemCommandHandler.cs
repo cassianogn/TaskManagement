@@ -13,7 +13,7 @@ namespace TaskManagement.Application.TaskItems.Commands.AddTaskItem
             _taskItemRepository = taskItemRepository;
         }
 
-        protected override async Task<HandlerResponse<Guid>> BaseHandleAsync(AddTaskItemCommand command)
+        protected override async Task<HandlerResponse<Guid>> BaseHandleAsync(AddTaskItemCommand command, CancellationToken cancellationToken)
         {
             ValidationResult commandValidation = command.Validate();
             if (!commandValidation.IsValid) return HandlerResponse<Guid>.DomainFailure(commandValidation.Errors.ToList());
@@ -25,7 +25,7 @@ namespace TaskManagement.Application.TaskItems.Commands.AddTaskItem
                 return HandlerResponse<Guid>.DomainFailure(duplicationValidation.Errors.ToList());
             }
 
-            await _taskItemRepository.CreateAsync(task);
+            await _taskItemRepository.CreateAsync(task, cancellationToken);
             return HandlerResponse<Guid>.Success(task.Id);
         }
     }

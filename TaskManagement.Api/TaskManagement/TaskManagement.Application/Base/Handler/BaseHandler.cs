@@ -1,4 +1,5 @@
 ﻿using System.Text.Json;
+using System.Threading;
 
 namespace TaskManagement.Application.Base.Handler
 {
@@ -6,11 +7,11 @@ namespace TaskManagement.Application.Base.Handler
     {
         protected BaseHandler() { }
 
-        public async Task<TResponse> HandleAsync(TRequest command)
+        public async Task<TResponse> HandleAsync(TRequest command, CancellationToken cancellationToken)
         {
             try
             {
-                return await BaseHandleAsync(command);
+                return await BaseHandleAsync(command, cancellationToken);
             }
             catch (Exception error)
             {
@@ -18,6 +19,6 @@ namespace TaskManagement.Application.Base.Handler
                 throw new HandlerException(message, error);
             }
         }
-        protected abstract Task<TResponse> BaseHandleAsync(TRequest command);
+        protected abstract Task<TResponse> BaseHandleAsync(TRequest command, CancellationToken cancellationToken);
     }
 }

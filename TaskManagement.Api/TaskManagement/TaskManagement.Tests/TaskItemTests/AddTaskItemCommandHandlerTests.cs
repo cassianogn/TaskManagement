@@ -18,7 +18,7 @@ namespace TaskManagement.Tests.TaskItemTests
 
             // Act
             var handler = new AddTaskItemCommandHandler(_taskItemRepositoryMock.Object);
-            HandlerResponse<Guid> response = await handler.HandleAsync(command);
+            HandlerResponse<Guid> response = await handler.HandleAsync(command, default);
 
             // Assert
             BasicFailureAsserts(response);
@@ -36,7 +36,7 @@ namespace TaskManagement.Tests.TaskItemTests
 
             // Act
             var handler = new AddTaskItemCommandHandler(_taskItemRepositoryMock.Object);
-            HandlerResponse<Guid> response = await handler.HandleAsync(command);
+            HandlerResponse<Guid> response = await handler.HandleAsync(command, default);
 
             // Assert
             BasicFailureAsserts(response);
@@ -61,7 +61,7 @@ namespace TaskManagement.Tests.TaskItemTests
          
             // Act
             var handler = new AddTaskItemCommandHandler(_taskItemRepositoryMock.Object);
-            HandlerResponse<Guid> response = await handler.HandleAsync(command);
+            HandlerResponse<Guid> response = await handler.HandleAsync(command, default);
 
             // Assert
             Assert.True(response.IsSuccessful);

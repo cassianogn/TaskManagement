@@ -37,7 +37,7 @@ namespace TaskManagement.Tests.TaskItemTests
             var addCommand = new AddTaskItemCommand("Test Task");
             var addHandler = _scope.ServiceProvider.GetRequiredService<AddTaskItemCommandHandler>();
             // Act
-            HandlerResponse<Guid> result = await addHandler.HandleAsync(addCommand);
+            HandlerResponse<Guid> result = await addHandler.HandleAsync(addCommand, default);
             // Assert
             Assert.NotNull(result);
 
@@ -45,7 +45,7 @@ namespace TaskManagement.Tests.TaskItemTests
             var command = new GetTaskItemsQuery(addCommand.Title);
             var handler = _scope.ServiceProvider.GetRequiredService<GetTaskItemsQueryHandler>();
             // Act
-            HandlerResponse<IReadOnlyCollection<GetTaskItemsQueryResult>> queryResult = await handler.HandleAsync(command);
+            HandlerResponse<IReadOnlyCollection<GetTaskItemsQueryResult>> queryResult = await handler.HandleAsync(command, default);
             // Assert
             Assert.NotNull(queryResult);
             Assert.NotNull(queryResult.Response);
@@ -61,7 +61,7 @@ namespace TaskManagement.Tests.TaskItemTests
             var addCommand = new AddTaskItemCommand("Test Task for Toggle");
             var addHandler = _scope.ServiceProvider.GetRequiredService<AddTaskItemCommandHandler>();
             // Act
-            HandlerResponse<Guid> result = await addHandler.HandleAsync(addCommand);
+            HandlerResponse<Guid> result = await addHandler.HandleAsync(addCommand, default);
             // Assert
             Assert.NotNull(result);
             Assert.True(result.IsSuccessful);
@@ -71,14 +71,14 @@ namespace TaskManagement.Tests.TaskItemTests
             var toggleHandler = _scope.ServiceProvider.GetRequiredService<ToggleTaskItemCommandHandler>();
             Guid newTaskItemId = result.Response;
             // Act
-            HandlerResponse toggleResult = await toggleHandler.HandleAsync(toggleCommand);
+            HandlerResponse toggleResult = await toggleHandler.HandleAsync(toggleCommand, default);
             // Assert
             Assert.NotNull(toggleResult);
             Assert.True(toggleResult.IsSuccessful);
             Assert.Null(toggleResult.ErrorMessage);
             
             var finalQueryCommand = new GetTaskItemsQuery(addCommand.Title);
-            HandlerResponse<IReadOnlyCollection<GetTaskItemsQueryResult>> finalQueryResult = await queryHandler.HandleAsync(finalQueryCommand);
+            HandlerResponse<IReadOnlyCollection<GetTaskItemsQueryResult>> finalQueryResult = await queryHandler.HandleAsync(finalQueryCommand, default);
             Assert.True(finalQueryResult.IsSuccessful);
             Assert.NotNull(finalQueryResult);
             Assert.NotNull(finalQueryResult.Response);
