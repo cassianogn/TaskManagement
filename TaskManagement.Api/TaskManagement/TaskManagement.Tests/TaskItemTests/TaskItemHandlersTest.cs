@@ -6,6 +6,7 @@ using TaskManagement.Application.TaskItems.Commands.AddTaskItem;
 using TaskManagement.Application.TaskItems.Queries;
 using TaskManagement.Domain.TaskItems;
 using TaskManagement.Infrastructure;
+using TaskManagement.Infrastructure.Data;
 
 namespace TaskManagement.Tests.TaskItemTests
 {
@@ -30,16 +31,14 @@ namespace TaskManagement.Tests.TaskItemTests
             // Arrange
             var addCommand = new AddTaskItemCommand("Test Task");
             var addHandler = new AddTaskItemCommandHandler(_taskItemRepository);
-
             // Act
-            var result = await addHandler.HandleAsync(addCommand);
+            HandlerResponse<Guid> result = await addHandler.HandleAsync(addCommand);
             // Assert
             Assert.NotNull(result);
 
             // arrange 
             var command = new GetTaskItemsQuery(addCommand.Title);
             var handler = new GetTaskItemsQueryHandler(_taskItemRepository);
-
             // Act
             HandlerResponse<IReadOnlyCollection<GetTaskItemsQueryResult>> queryResult = await handler.HandleAsync(command);
             // Assert
@@ -51,6 +50,8 @@ namespace TaskManagement.Tests.TaskItemTests
 
         public void Dispose()
         {
+            var context = _scope.ServiceProvider.GetRequiredService<TaskManagementDbContext>();
+            context.Database.EnsureDeleted();
             _scope.Dispose();
             _serviceProvider.Dispose();
         }
