@@ -32,7 +32,7 @@ export const useToggleTask = () => {
       const previousTasks = queryClient.getQueryData<TaskItem[]>(TASKS_QUERY_KEY);
 
       if (previousTasks) {
-        queryClient.setQueryData<TaskItem[]>(TASKS_QUERY_KEY, (old) => {
+        queryClient.setQueryData<TaskItem[]>(TASKS_QUERY_KEY, (old?: TaskItem[]) => {
           if (!old) return old;
           return old.map((task) =>
             task.id === taskId ? { ...task, isCompleted: !task.isCompleted } : task
