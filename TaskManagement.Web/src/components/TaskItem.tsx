@@ -10,8 +10,11 @@ interface TaskItemProps {
 export const TaskItem = ({ task, onToggle }: TaskItemProps) => {
 
   return (
-    <div>
-      <span>
+    <div className="flex items-center justify-between p-4 border-b border-gray-200 hover:bg-gray-50 transition-colors">
+      <span
+        className={`flex-1 text-lg ${task.isCompleted ? 'line-through text-gray-400' : 'text-gray-900'
+          }`}
+      >
         {task.title}
       </span>
       <Toggle
