@@ -20,7 +20,6 @@ namespace TaskManagement.Tests.TaskItemTests
 
         public TaskItemHandlersTest()
         {
-            var taskItems = new List<TaskItem>();
             _serviceProvider = new ServiceCollection()
                 .AddApplication()
                 .AddInfrastructure()
