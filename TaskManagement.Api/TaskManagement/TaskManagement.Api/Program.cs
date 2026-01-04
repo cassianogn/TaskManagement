@@ -1,4 +1,5 @@
 using TaskManagement.Application;
+using TaskManagement.Application.TaskItems.Commands.AddTaskItem;
 using TaskManagement.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -34,4 +35,18 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var addHandler = services.GetRequiredService<AddTaskItemCommandHandler>();
+    var addCommand = new AddTaskItemCommand("Test Task");
+    await addHandler.HandleAsync(addCommand, default);
+
+    var addCommand2 = new AddTaskItemCommand("Test Task 2");
+    await addHandler.HandleAsync(addCommand2, default);
+}
+
 app.Run();
+
+
