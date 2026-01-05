@@ -133,8 +133,42 @@ I implemented **Scenario Tests** (e.g., `TaskItemHandlersTest`) that exercise th
 
 ---
 
+## Frontend Architecture (React + Vite)
+
+The frontend was built using **React 18** and **TypeScript**, focused on performance, type safety, and a clear separation between UI and Business Logic.
+
+### 1. State Management Strategy (Server vs. Client State)
+
+Instead of using a global state manager (like Redux) for everything, I adopted **TanStack Query (React Query)**.
+
+**Reason:** This library specifically handles **Server State** (caching, deduplication, background updates, and loading states). This drastically reduces boilerplate code and ensures the UI is always in sync with the backend without manual `useEffect` fetching logic.
+
+### 2. Component & Logic Separation (Custom Hooks)
+
+I implemented the **Custom Hook Pattern** to separate logic from presentation.
+
+**Benefit:** Components remain focused on rendering UI (JSX). Complex logic, such as form handling or data transformations, is extracted into hooks (e.g., `useTaskItems`). This makes the code more testable and reusable.
+
+### 3. Styling: Utility-First (Tailwind CSS)
+
+I chose **Tailwind CSS** for styling.
+
+**Reason:** The utility-first approach allows for rapid UI development and ensures design consistency through a centralized configuration. It also provides superior performance by generating minimal CSS bundles at build time, avoiding the runtime overhead associated with traditional CSS-in-JS solutions.
+
+### 4. API Layer
+
+HTTP communication is centralized via **Axios**.
+
+**Implementation:** A singleton Axios instance is configured with base URLs that adapt to the environment (Docker HTTP vs. Local HTTPS). This centralization allows for easy implementation of interceptors for global error handling.
+
+### 5. Developer Experience (Vite)
+
+The project uses **Vite** as the build tool.
+
+**Reason:** It provides instant server start and **Hot Module Replacement (HMR)**, significantly speeding up the development feedback loop compared to Webpack-based solutions.
+
+---
+
 ## Notes
 
 - Make sure no other services are using ports **5000**, **5173**, or **7064**
-- For production deployment, configure appropriate environment variables
-- Check individual project folders for additional documentation
