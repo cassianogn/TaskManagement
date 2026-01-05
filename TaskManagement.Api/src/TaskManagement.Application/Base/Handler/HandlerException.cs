@@ -15,9 +15,5 @@ namespace TaskManagement.Application.Base.Handler
         public HandlerException(string? message, Exception? innerException) : base(message, innerException)
         {
         }
-
-        protected HandlerException(SerializationInfo info, StreamingContext context) : base(info, context)
-        {
-        }
     }
 }

@@ -47,8 +47,8 @@ Use this method for debugging locally with Visual Studio (IIS Express) or CLI.
 Open a terminal and navigate to the API project folder:
 
 ```bash
-cd src/TaskManagement.Api
-dotnet run --launch-profile https
+cd TaskManagement.Api/src/TaskManagement.Api
+dotnet run
 ```
 
 The API will start at: **https://localhost:7064**
