@@ -10,14 +10,15 @@ builder.Services.AddInfrastructure();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+var allowedOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>();
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", policy =>
     {
-        policy.WithOrigins("http://localhost:5173", "http://localhost:5174")
+        policy.WithOrigins(allowedOrigins ?? Array.Empty<string>())
               .AllowAnyHeader()
-              .AllowAnyMethod()
-              .AllowCredentials();
+              .AllowAnyMethod();
     });
 });
 var app = builder.Build();
@@ -30,22 +31,9 @@ if (app.Environment.IsDevelopment())
 }
 app.UseCors("AllowFrontend");
 
-app.UseHttpsRedirection();
-
 app.UseAuthorization();
 
 app.MapControllers();
-
-using (var scope = app.Services.CreateScope())
-{
-    var services = scope.ServiceProvider;
-    var addHandler = services.GetRequiredService<AddTaskItemCommandHandler>();
-    var addCommand = new AddTaskItemCommand("Test Task");
-    await addHandler.HandleAsync(addCommand, default);
-
-    var addCommand2 = new AddTaskItemCommand("Test Task 2");
-    await addHandler.HandleAsync(addCommand2, default);
-}
 
 app.Run();
 

@@ -42,7 +42,7 @@ export const useToggleTask = () => {
 
       return { previousTasks };
     },
-    onError: (err, taskId, context) => {
+    onError: (_error, _taskId, context) => {
       if (context?.previousTasks) {
         queryClient.setQueryData(TASKS_QUERY_KEY, context.previousTasks);
       }

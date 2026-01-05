@@ -1,0 +1,8 @@
+node_modules
+dist
+.git
+.vs
+.vscode
+# Ignora arquivos de ambiente locais para não poluir o build de produção
+.env.local
+.env.*.local

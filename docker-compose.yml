@@ -1,0 +1,28 @@
+services:
+  api:
+    image: taskmanagement-api
+    build:
+      context: ./TaskManagement.Api
+      dockerfile: src/TaskManagement.Api/Dockerfile
+    ports:
+      - "5000:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    networks:
+      - task-network
+
+  web:
+    image: taskmanagement-web
+    build:
+      context: ./TaskManagement.Web
+      dockerfile: Dockerfile
+    ports:
+      - "5173:80"
+    depends_on:
+      - api
+    networks:
+      - task-network
+
+networks:
+  task-network:
+    driver: bridge
