@@ -75,7 +75,7 @@ npm run dev:local
 ## Tech Stack
 
 - **Backend:** .NET 8 Web API
-- **Frontend:** React 18 + TypeScript + Vite
+- **Frontend:** React 19 + TypeScript + Vite
 - **Containerization:** Docker & Docker Compose
 
 ---
@@ -135,7 +135,7 @@ I implemented **Scenario Tests** (e.g., `TaskItemHandlersTest`) that exercise th
 
 ## Frontend Architecture (React + Vite)
 
-The frontend was built using **React 18** and **TypeScript**, focused on performance, type safety, and a clear separation between UI and Business Logic.
+The frontend was built using **React 19** and **TypeScript**, focused on performance, type safety, and a clear separation between UI and Business Logic.
 
 ### 1. State Management Strategy (Server vs. Client State)
 
