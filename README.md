@@ -117,6 +117,29 @@ Business rules and data integrity checks are centralized in static validation me
 
 **Benefit:** This pattern ensures that the Domain Entity remains the **"single source of truth"** for validity. It protects the domain invariants against any entry point, preventing the instantiation of invalid entities without the complexity of stateful domain services.
 
+### Code Style & Conventions
+
+#### Implicit Typing (var) Strategy
+
+The codebase adheres to the official [Microsoft C# Coding Conventions](https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/coding-style/coding-conventions) regarding the use of implicit typing.
+
+**Use var:** When the variable type is obvious from the right side of the assignment (e.g., `new` operator).
+
+```csharp
+// Good
+var task = new TaskItem("Title", DateTime.UtcNow);
+```
+
+**Use Explicit Type:** When the type is not immediately apparent from the right side (e.g., method return values) to ensure readability during code reviews.
+
+```csharp
+// Good (Improves readability)
+int count = _repository.GetCount();
+
+// Avoid (Requires hovering to know the type)
+var count = _repository.GetCount();
+```
+
 ---
 
 ## Testing Strategy
